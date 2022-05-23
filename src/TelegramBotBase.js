@@ -6,11 +6,18 @@ const { Updates } = require("./telegramBot_modules/Updates");
 const { DB } = require("./telegramBot_modules/DB");
 const { Send } = require("./telegramBot_modules/Send");
 const { Users } = require("./telegramBot_modules/Users");
-const { UpdateHandler } = require("./telegramBot_modules/UpdateHandler");
+const { UpdateHandler } = require("./telegramBot_modules/UpdateHandler/module");
+
+//require("./telegramBot_modules/UpdateHandler/Initializer")();
 
 class TelegramBotBase {
 
   static apiRoot = "api.telegram.org";
+  static avalableConfigOptions = new Set([
+    "token",
+    //"apiRoot",
+    "delayMin",
+  ]);
 
   delayMin = 300; //ms
 
@@ -18,8 +25,12 @@ class TelegramBotBase {
   requestOptions;
 
   constructor(config) {
-    this.token = config.token;
-    if (config.delayMin) { this.delayMin = config.delayMin; };
+
+    for (const [key, value] of Object.entries(config)) {
+      if (TelegramBotBase.avalableConfigOptions.has(key)){
+        this[key] = value;
+      }
+    }
 
     this.requestOptions = {
       hostname: config.apiRoot || TelegramBotBase.apiRoot,
@@ -35,6 +46,7 @@ class TelegramBotBase {
     this.send = new Send(this);
     this.users = new Users(this);
     this.updateHandler = new UpdateHandler(this);
+    
   }
 
   registerOnExitListeners() {

@@ -17,9 +17,13 @@ class Send {
 
   message(chatID, msg, options = {}) {
     return new Promise((resolve, reject) => {
-      this.#ITSELF.requestOptions.path = encodeURI(
-        `/bot${this.#ITSELF.token}/sendMessage?chat_id=${chatID}&text=${msg}${options.reply_markup ? `&reply_markup=${JSON.stringify(options.reply_markup)}` : ""}`
-      );
+
+      let url = `/bot${this.#ITSELF.token}/sendMessage?chat_id=${chatID}&text=${msg}`;
+      //add options
+      for (const [key, value] of Object.entries(options)) {url += `&${key}=${value}`;}
+
+      this.#ITSELF.requestOptions.path = encodeURI(url);
+
       this.#ITSELF.requestOptions.method = "GET";
 
       https.get(this.#ITSELF.requestOptions, (res) => {

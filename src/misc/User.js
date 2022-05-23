@@ -15,7 +15,13 @@ class User {
     lifeSpan: 1,
   };
 
-  static defaultSerializableValuse = {};
+  static states = {
+    MENU:"menu",
+  };
+
+  static defaultSerializableValuse = {
+    inputState: User.states.MENU,
+  };
   static defaultUnserializableValuse = {
     lifeSpan: 1,
   };

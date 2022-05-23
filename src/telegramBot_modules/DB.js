@@ -33,7 +33,9 @@ class DB {
   async saveUser(userData){
     console.log("saving:");
     console.log(userData);
-    await this.users.insertOne(userData);
+    let filter = {id:userData.id};
+    delete userData.id;
+    await this.users.updateOne(filter,{$set: userData},{ upsert: true });
     return;
   }
 

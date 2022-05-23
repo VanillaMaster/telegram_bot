@@ -1,4 +1,4 @@
-const { User } = require("./User");
+const { User } = require("../misc/User");
 
 /**
  * @typedef {import('../TelegramBotBase').TelegramBotBase} TelegramBotBase

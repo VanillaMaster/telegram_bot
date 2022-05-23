@@ -46,7 +46,7 @@ class UpdateLoop {
 
   }
 
-  getStopPromise(){
+  getStopPromise(){//should i just return this.#stop by itself ?
     return new Promise((resolve)=>{
       this.#stop.then(resolve);
     });
