@@ -1,4 +1,3 @@
-//const AsyncFunction = (async () => {}).constructor;
 const { User } = require("../../misc/User");
 /**@typedef {import('../../TelegramBotBase').TelegramBotBase} TelegramBotBase*/
 

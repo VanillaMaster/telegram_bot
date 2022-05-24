@@ -24,8 +24,6 @@ class Users {
 
   async getUser(id){
     if (this.#map.has(id)){
-      console.log("user exists");
-      console.log(this.#map.get(id));
       return this.#map.get(id);
     }
 
@@ -34,10 +32,8 @@ class Users {
     let user;
     if (userData != null){
       user = new User(userData);
-      console.log("user was loaded");
     } else {
       user = new User({"id":id});
-      console.log("create new user");
     }
     this.#map.set(id,user);
 
@@ -64,6 +60,16 @@ class Users {
 
   stopUnloadLoop() {
     clearInterval(this.#unloadLoop);
+  }
+
+  //TODO: should save as bulk
+  async unloadAll(){
+    let res = [];
+    for (const [id, user] of this.#map.entries()) {
+      res.push(this.#ITSELF.DB.saveUser(user.serializable))
+    }
+    await Promise.all(res);
+    return;
   }
 
 }

@@ -10,6 +10,18 @@ const { UpdateHandler } = require("./telegramBot_modules/UpdateHandler/module");
 
 //require("./telegramBot_modules/UpdateHandler/Initializer")();
 
+
+/**
+ * default modules list
+ * @typedef {Object} modules
+ * @property {UpdateLoop} updateLoop
+ * @property {Updates} updates
+ * @property {DB} DB
+ * @property {Send} send
+ * @property {Users} users
+ * @property {UpdateHandler} updateHandler
+ */
+
 class TelegramBotBase {
 
   static apiRoot = "api.telegram.org";
@@ -46,8 +58,18 @@ class TelegramBotBase {
     this.send = new Send(this);
     this.users = new Users(this);
     this.updateHandler = new UpdateHandler(this);
-    
+
+    //prepare for module autoloading
+    this.modules.updateLoop = this.updateLoop;
+    this.modules.updates = this.updates;
+    this.modules.DB = this.DB;
+    this.modules.send = this.send;
+    this.modules.users = this.users;
+    this.modules.updateHandler = this.updateHandler;
+
   }
+  /**@type {modules} */
+  modules = {};
 
   registerOnExitListeners() {
     //on exit func
@@ -58,6 +80,7 @@ class TelegramBotBase {
       this.users.stopUnloadLoop();
 
       await Promise.all([
+        //TODO: add save all users
         this.updateLoop.getStopPromise(),
         this.DB.client.close()
       ]);

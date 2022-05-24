@@ -13,26 +13,33 @@ module.exports = class Menu{
   }
   static handledState = User.states.MENU;
 
-	static keyboard = {
-    reply_markup: JSON.stringify({
-      keyboard: [
-        [{ text: "😀 asd" }, { text: "🍕 qwe" }],
-        [{ text: "🦽 zxc" }]
-      ],
-      resize_keyboard: true,
-    }),
-    parse_mode: "MarkdownV2",
+  #commandMap = {
+    "/help": this.#help,
+    "/info": this.#info,
   };
 
 	async call(options) {
-		const chatID = options.update.message.chat.id;
-
 		let words = options.update.message.text.split(/[ ]+/);
-		let resp = {};
-		resp.command = words.shift();
-		resp.arguments = words;
 
-		await this.#ITSELF.send.message(chatID, `\`\`\`JSON\n${JSON.stringify(resp)}\n\`\`\``, Menu.keyboard)
-		return;
+    let command = words.shift();
+    options.commandArguments = words;
+    if (command in this.#commandMap) {
+      //call function with right context
+      await this.#commandMap[command].call(this,options);
+    } else {
+      // command not found
+      await this.#ITSELF.send.message(options.update.message.chat.id, `command not found`);
+    }
+    return;
 	}
+
+  static helpText = `help command.\nTODO: write normal help laiter...`;
+  async #help(options){
+    await this.#ITSELF.send.message(options.update.message.chat.id, Menu.helpText);
+    return;
+  }
+  async #info(options){
+    await this.#ITSELF.send.message(options.update.message.chat.id, `\`\`\`JSON\n${JSON.stringify(options.user)}\n\`\`\``, {parse_mode: "MarkdownV2"})
+    return;
+  }
 }
