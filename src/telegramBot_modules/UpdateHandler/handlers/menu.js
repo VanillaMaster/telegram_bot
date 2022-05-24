@@ -28,18 +28,18 @@ module.exports = class Menu{
       await this.#commandMap[command].call(this,options);
     } else {
       // command not found
-      await this.#ITSELF.send.message(options.update.message.chat.id, `command not found`);
+      await this.#ITSELF.modules.send.message(options.update.message.chat.id, `command not found`);
     }
     return;
 	}
 
   static helpText = `help command.\nTODO: write normal help laiter...`;
   async #help(options){
-    await this.#ITSELF.send.message(options.update.message.chat.id, Menu.helpText);
+    await this.#ITSELF.modules.send.message(options.update.message.chat.id, Menu.helpText);
     return;
   }
   async #info(options){
-    await this.#ITSELF.send.message(options.update.message.chat.id, `\`\`\`JSON\n${JSON.stringify(options.user)}\n\`\`\``, {parse_mode: "MarkdownV2"})
+    await this.#ITSELF.modules.send.message(options.update.message.chat.id, `\`\`\`JSON\n${JSON.stringify(options.user)}\n\`\`\``, {parse_mode: "MarkdownV2"})
     return;
   }
 }

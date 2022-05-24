@@ -27,7 +27,7 @@ class Users {
       return this.#map.get(id);
     }
 
-    let userData = await this.#ITSELF.DB.findeUser(id);
+    let userData = await this.#ITSELF.modules.DB.findeUser(id);
 
     let user;
     if (userData != null){
@@ -49,7 +49,7 @@ class Users {
         for (const [id, user] of this.#map.entries()) {
           user.unserializable.lifeSpan--;
           if (user.unserializable.lifeSpan < 0) {
-            this.#ITSELF.DB.saveUser(user.serializable)
+            this.#ITSELF.modules.DB.saveUser(user.serializable)
             this.#map.delete(id);
           }
         }
@@ -66,7 +66,7 @@ class Users {
   async unloadAll(){
     let res = [];
     for (const [id, user] of this.#map.entries()) {
-      res.push(this.#ITSELF.DB.saveUser(user.serializable))
+      res.push(this.#ITSELF.modules.DB.saveUser(user.serializable))
     }
     await Promise.all(res);
     return;

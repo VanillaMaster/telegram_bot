@@ -26,13 +26,13 @@ class UpdateLoop {
       while (this.isRunning) {
         //console.time("updateLoop");
 
-        this.#tasks[0] = this.#ITSELF.updates.get();
+        this.#tasks[0] = this.#ITSELF.modules.updates.get();
         this.#tasks[1] = new Promise((resolve) => {
           setTimeout(resolve, this.#ITSELF.delayMin);
         }
         );
 
-        await this.#ITSELF.updateHandler.process(
+        await this.#ITSELF.modules.updateHandler.process(
           (await Promise.all(this.#tasks))[0]
         );
 

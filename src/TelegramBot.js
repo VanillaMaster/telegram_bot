@@ -7,11 +7,11 @@ class TelegramBot {
   }
 
   async start() {
-    await this.#base.DB.connect("mongodb://localhost:27017");
+    await this.#base.modules.DB.connect("mongodb://localhost:27017");
     this.#base.registerOnExitListeners();
-    this.#base.users.startUnloadLoop();
+    this.#base.modules.users.startUnloadLoop();
     
-    this.#base.updateLoop.start();
+    this.#base.modules.updateLoop.start();
   }
 }
 

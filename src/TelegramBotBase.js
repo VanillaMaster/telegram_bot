@@ -52,20 +52,13 @@ class TelegramBotBase {
       timeout: 60000,
     };
 
-    this.updateLoop = new UpdateLoop(this);
-    this.updates = new Updates(this);
-    this.DB = new DB(this);
-    this.send = new Send(this);
-    this.users = new Users(this);
-    this.updateHandler = new UpdateHandler(this);
-
-    //prepare for module autoloading
-    this.modules.updateLoop = this.updateLoop;
-    this.modules.updates = this.updates;
-    this.modules.DB = this.DB;
-    this.modules.send = this.send;
-    this.modules.users = this.users;
-    this.modules.updateHandler = this.updateHandler;
+    //this should be done automaticly
+    this.modules.updateLoop = new UpdateLoop(this);
+    this.modules.updates = new Updates(this);
+    this.modules.DB = new DB(this);
+    this.modules.send = new Send(this);
+    this.modules.users = new Users(this);
+    this.modules.updateHandler = new UpdateHandler(this);
 
   }
   /**@type {modules} */
@@ -76,13 +69,13 @@ class TelegramBotBase {
     const onExit = async () => {
       console.log("prepare to exit...");
       
-      this.updateLoop.isRunning = false;
-      this.users.stopUnloadLoop();
+      this.modules.updateLoop.isRunning = false;
+      this.modules.users.stopUnloadLoop();
 
       await Promise.all([
         //TODO: add save all users
-        this.updateLoop.getStopPromise(),
-        this.DB.client.close()
+        this.modules.updateLoop.getStopPromise(),
+        this.modules.DB.client.close()
       ]);
 
       console.log("exit success");

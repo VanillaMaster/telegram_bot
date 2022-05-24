@@ -25,7 +25,7 @@ class UpdateHandler {
 
     for (let i = 0; i < data?.result?.length; i++) {
       const userID = data.result[i].message.from.id;
-      const user = await this.#ITSELF.users.getUser(userID);
+      const user = await this.#ITSELF.modules.users.getUser(userID);
       //reset user lifspan
       user.unserializable.lifeSpan = User.defaultUnserializableValuse.lifeSpan;
 
