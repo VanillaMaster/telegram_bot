@@ -30,6 +30,11 @@ class DB {
     return user;
   }
 
+  async findAndUpdateUser(id,update){
+    const user = await this.users.findOneAndUpdate({"id":id},{$set: update},{"projection": { _id: 0}})
+    return user.value;
+  }
+
   async saveUser(userData){
     console.log("saving:");
     console.log(userData);

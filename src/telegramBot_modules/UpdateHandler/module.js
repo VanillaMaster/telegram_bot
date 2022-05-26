@@ -42,7 +42,7 @@ class UpdateHandler {
         if (state in this.handlers){
           res.push(this.handlers[state].call(options));
         } else {
-          console.error(`no handler for user: id${userID}\nstate: ${state}`);
+          console.error(`no handler for user: ${userID}\nstate: ${state}`);
         }
       }
     }

@@ -27,11 +27,16 @@ class Users {
       return this.#map.get(id);
     }
 
-    let userData = await this.#ITSELF.modules.DB.findeUser(id);
+    const timeNow = Math.floor(new Date().getTime() / 1000);//unix one
+    let userData = await this.#ITSELF.modules.DB.findAndUpdateUser(id,{time:timeNow});
 
     let user;
     if (userData != null){
       user = new User(userData);
+      const delta = timeNow - user.serializable.time;
+      user.serializable.time = timeNow;
+      user.serializable.money+= (delta * User.moneyRechargeRate);
+      if (user.serializable.money > User.moneyRechargeCap) {user.serializable.money = User.moneyRechargeCap;}
     } else {
       user = new User({"id":id});
     }

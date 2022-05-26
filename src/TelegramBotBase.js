@@ -8,8 +8,6 @@ const { Send } = require("./telegramBot_modules/Send");
 const { Users } = require("./telegramBot_modules/Users");
 const { UpdateHandler } = require("./telegramBot_modules/UpdateHandler/module");
 
-//require("./telegramBot_modules/UpdateHandler/Initializer")();
-
 
 /**
  * default modules list
@@ -52,7 +50,7 @@ class TelegramBotBase {
       timeout: 60000,
     };
 
-    //this should be done automaticly
+    //this should be done automaticly ? or not
     this.modules.updateLoop = new UpdateLoop(this);
     this.modules.updates = new Updates(this);
     this.modules.DB = new DB(this);
