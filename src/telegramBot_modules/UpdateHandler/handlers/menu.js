@@ -18,7 +18,7 @@ module.exports = class Menu{
     "/info": this.#info,
   };
 
-	async call(options) {
+	async invoke(options) {
 		let words = options.update.message.text.split(/[ ]+/);
 
     let command = words.shift();
@@ -32,14 +32,21 @@ module.exports = class Menu{
     }
     return;
 	}
+  /**@param {User} user*/
+  async onUserEntrance(user){
+    console.log("onUserEntrance: MENU");
+    return;
+  }
 
-  static helpText = `help command.\nTODO: write normal help laiter...`;
+  static helpText = `help command.\nTODO: write normal help laiter...\n\ncommand list:\n`;
   async #help(options){
-    await this.#ITSELF.modules.send.message(options.update.message.chat.id, Menu.helpText);
+    await this.#ITSELF.modules.send.message(options.update.message.chat.id, (Menu.helpText + Object.keys(this.#commandMap).join("\n")));
     return;
   }
   async #info(options){
     await this.#ITSELF.modules.send.message(options.update.message.chat.id, `\`\`\`JSON\n${JSON.stringify(options.user)}\n\`\`\``, {parse_mode: "MarkdownV2"})
     return;
   }
+
+
 }

@@ -40,7 +40,7 @@ class UpdateHandler {
         if (subState !== undefined) {options.subState = subState};
         
         if (state in this.handlers){
-          res.push(this.handlers[state].call(options));
+          res.push(this.handlers[state].invoke(options));
         } else {
           console.error(`no handler for user: ${userID}\nstate: ${state}`);
         }
@@ -48,6 +48,17 @@ class UpdateHandler {
     }
 
     await Promise.all(res);
+    return;
+  }
+
+  /**@param {User} user*/
+  async notifyHandler(user){
+    const [state,subState] = user.serializable.inputState.split(":");
+    if (state in this.handlers) {
+      await this.handlers[state].onUserEntrance(user);
+    } else {
+      console.error(`cant notift inexisting handler for state: "${state}"`);
+    }
     return;
   }
 
