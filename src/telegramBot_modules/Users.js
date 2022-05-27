@@ -32,14 +32,14 @@ class Users {
 
     let user;
     if (userData != null){
-      user = new User(userData,this.#ITSELF);
+      user = new User(userData);
       const delta = timeNow - user.serializable.time;
       user.serializable.time = timeNow;
       user.serializable.money+= (delta * User.moneyRechargeRate);
       if (user.serializable.money > User.moneyRechargeCap){user.serializable.money = User.moneyRechargeCap;}
 
     } else {
-      user = new User({"id":id},this.#ITSELF);
+      user = new User({"id":id});
     }
     this.#map.set(id,user);
 

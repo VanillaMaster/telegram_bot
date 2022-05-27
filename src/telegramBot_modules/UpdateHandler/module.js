@@ -51,14 +51,9 @@ class UpdateHandler {
     return;
   }
 
-  /**@param {User} user*/
-  async notifyHandler(user){
-    const [state,subState] = user.serializable.inputState.split(":");
-    if (state in this.handlers) {
-      await this.handlers[state].onUserEntrance(user);
-    } else {
-      console.error(`cant notift inexisting handler for state: "${state}"`);
-    }
+  async invokeHandler(data){
+    const [state,subState] = data.user.serializable.inputState.split(":");
+    await this.handlers[state].invoke(data);
     return;
   }
 

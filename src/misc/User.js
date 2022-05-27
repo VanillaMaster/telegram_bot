@@ -1,43 +1,27 @@
-/**
- * @typedef {import('../TelegramBotBase').TelegramBotBase} TelegramBotBase
- */
 class User {
-  /**@type {TelegramBotBase}*/
-  #botContext;
-  constructor(userData,botContext) {
-    this.#botContext = botContext;
+  constructor(userData) {
 
     for (const [key, value] of Object.entries(userData)) {
-      this.#serializable[key] = value;
+      this.serializable[key] = value;
     }
 
     for (const [key, value] of Object.entries(User.defaultSerializableValuse)) {
-      if (!(key in this.#serializable)){
-        this.#serializable[key] = value;
+      if (!(key in this.serializable)){
+        this.serializable[key] = value;
       }
     }
 
     for (const [key, value] of Object.entries(User.defaultUnserializableValuse)) {
       this.unserializable[key] = value;
     }
-
-    const f = ()=>{this.#botContext.modules.updateHandler.notifyHandler(this);}
-    this.serializable = new Proxy(this.#serializable,{
-      set(target, prop, val){
-        target[prop] = val;
-        if (prop == "inputState") {f();}
-        return true;
-      }
-    });
-
   }
-  #serializable = {};
-  serializable;
+  serializable = {};
 
   unserializable = {};
 
   static states = {
     MENU:"menu",
+    DICE:"dice",
   };
 
   static moneyRechargeRate = 1/1;//money/secconds
